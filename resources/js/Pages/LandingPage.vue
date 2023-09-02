@@ -41,11 +41,32 @@ const recentlyBoughts = ref([
     {"title": "Banneth Open Front Formal Dress In Black", "image": "/images/recently-bought/5.svg", "amount": "$69", "discounted": "$99.95"}
 ]);
 
+const inspos = ref([
+    {"image": "/images/inspo/1.svg"},
+    {"image": "/images/inspo/2.svg"},
+    {"image": "/images/inspo/3.svg"},
+    {"image": "/images/inspo/4.svg"},
+    {"image": "/images/inspo/5.svg"}
+]);
+
 const cart = ref([]);
+
+const showModal = ref(false);
+
+const showCart = () => {
+    showModal.value = true;
+};
+
+const closeCart = () => {
+    showModal.value = false;
+};
 
 const addToCart = (selected) => {
     cart.value.push(selected);
-    console.log(cart);
+};
+
+const removeFromCart = (title) => {
+    cart.value = cart.value.filter(item => item.title !== title);
 };
 
 </script>
@@ -53,6 +74,36 @@ const addToCart = (selected) => {
 <template>
     <Head title="Welcome" />
     <div class="max-w-screen-xl mx-auto p-4 modified-font">
+        <!-- Modal Overlay -->
+        <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-lg" v-if="showModal">
+            <!-- Modal Container -->
+            <div class="bg-white p-8 w-96">
+                <!-- Modal Header -->
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">Your Cart</h2>
+                    <button class="text-gray-500 hover:text-gray-700 focus:outline-none" @click="closeCart">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path d="M.293 1.293a1 1 0 011.414 0L8 6.586l6.293-6.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.293z"/>
+                        </svg>
+                    </button>
+                </div>
+                <!-- Modal Content -->
+                <p v-if="cart.length == 0">
+                    No Item in your Cart Yet!
+                </p>
+                <p v-else v-for="(item) in cart" class="text-gray-700 justify-center items-center">
+                    <img :src="item.image" class="mb-4 mt-4 h-10">
+                    <div class="mb-4">{{ item.title }}</div>
+                    <a href="#" class="mb-4" @click="removeFromCart(item.title)">Remove</a>
+                </p>
+                <!-- Modal Footer -->
+                <div class="mt-4 flex justify-center">
+                    <button class="bg-black text-white px-4 py-2 focus:outline-none focus:ring focus:ring-gray-400" @click="closeCart">
+                        BEGIN CHECKOUT
+                    </button>
+                </div>
+            </div>
+        </div>
         <!-- First Navigation Bar (Top) -->
         <nav class="bg-white text-gray-800 py-4">
             <div class="container mx-auto flex justify-between items-center">
@@ -73,7 +124,7 @@ const addToCart = (selected) => {
                         <li class="flex justify-center item-center">
                             <img src="/images/right-panel/bx_bx-user.svg" class="mr-2">
                         </li>
-                        <li class="flex justify-center item-center">
+                        <li class="flex justify-center item-center" @click="showCart">
                             {{ cart.length }}
                             <img src="/images/right-panel/bx_bx-shopping-bag.svg" class="mr-2">
                         </li>
@@ -207,6 +258,102 @@ const addToCart = (selected) => {
                 >Buy</button>
             </div>
         </div>
+        <div class="container mx-auto flex justify-center items-center mr-12 py-8">
+            <h1 class="text-2xl font-semibold text-gray-800">Your Next Inspo</h1><br/>
+        </div>
+        <p class="text-gray-600 mt-2 mb-4 text-sm flex justify-center">Check who's wearing what by using #THREADInspo on Instagram</p>
+        <div class="container mx-auto flex justify-center items-center">
+            <div v-for="(inspo) in inspos" class="inline-block mr-3">
+                <div class="max-w-md mx-auto bg-white overflow-hidden">
+                    <div class="px-2 py-6">
+                        <img :src="inspo.image">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-black w-1440 h-20">
+            <div class="container mx-auto flex justify-center items-center py-6">
+                <div class="inline-block mr-6 text-white px-4">
+                    <h3 class="text-2xl font-semibold">
+                        SIGN UP FOR EXCLUSIVE DEALS AND UPDATES
+                    </h3>
+                </div>
+                <div class="inline-block mr-6 px-4">
+                    <input type="text" class="border border-gray-300 p-2" placeholder="Your Email Address">
+                </div>
+            </div>
+        </div>
+        <footer class="bg-white text-black py-4">
+            <div class="container mx-auto flex flex-wrap justify-center">
+                <div class="w-full md:w-1/2 md:w-1/4 p-4">
+                <h3 class="text-xl font-semibold">COMPANY INFO</h3>
+                <ul class="mt-2">
+                    <li><a href="#">About THREADED</a></li>
+                    <li><a href="#">Affiliate</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+                </div>
+                <div class="w-full md:w-1/2 md:w-1/4 p-4">
+                <h3 class="text-xl font-semibold">HELP AND SUPPORT</h3>
+                <ul class="mt-2">
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">How To Order</a></li>
+                    <li><a href="#">How To Track</a></li>
+                </ul>
+                </div>
+                <div class="w-full md:w-1/2 md:w-1/4 p-4">
+                <h3 class="text-xl font-semibold">CUSTOMER CARE</h3>
+                <ul class="mt-2">
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Payment Methods</a></li>
+                </ul>
+                </div>
+                <div class="w-full md:w-1/2 md:w-1/4 p-4">
+                <h3 class="text-xl font-semibold">FOLLOW US</h3>
+                <ul class="flex space-x-6 mt-2">
+                    <li class="flex justify-center item-center">
+                        <img src="/images/socials/bx_bxl-facebook.svg" class="mr-2">
+                    </li>
+                    <li class="flex justify-center item-center">
+                        <img src="/images/socials/bx_bxl-instagram.svg" class="mr-2">
+                    </li>
+                    <li class="flex justify-center item-center">
+                        <img src="/images/socials/bx_bxl-pinterest-alt.svg" class="mr-2">
+                    </li>
+                    <li class="flex justify-center item-center">
+                        <img src="/images/socials/bx_bxl-tiktok.svg" class="mr-2">
+                    </li>
+                    <li class="flex justify-center item-center">
+                        <img src="/images/socials/bx_bxl-twitter.svg" class="mr-2">
+                    </li>
+                    <li class="flex justify-center item-center">
+                        <img src="/images/socials/bx_bxl-youtube.svg" class="mr-2">
+                    </li>
+                </ul>
+                <h3 class="text-xl font-semibold">WE ACCEPT</h3>
+                <ul class="flex space-x-6 mt-2">
+                    <li class="flex justify-center item-center">
+                        <img src="/images/payment/image 1.svg" class="mr-2">
+                    </li>
+                    <li class="flex justify-center item-center">
+                        <img src="/images/payment/image 2.svg" class="mr-2">
+                    </li>
+                    <li class="flex justify-center item-center">
+                        <img src="/images/payment/image 3.svg" class="mr-2">
+                    </li>
+                    <li class="flex justify-center item-center">
+                        <img src="/images/payment/image 4.svg" class="mr-2">
+                    </li>
+                    <li class="flex justify-center item-center">
+                        <img src="/images/payment/image 5.svg" class="mr-2">
+                    </li>
+                </ul>
+                </div>
+            </div>
+        </footer>
     </div>
 </template>
 
