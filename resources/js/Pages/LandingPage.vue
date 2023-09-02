@@ -244,7 +244,7 @@ const removeFromCart = (title) => {
             <img class="max-w-full" src="/images/contents/new-in.svg">
         </div>
         <div class="container mx-auto flex justify-center items-center mr-12 py-8">
-            <h1 class="text-2xl font-semibold text-gray-800">Recently Brought</h1><br/>
+            <h1 class="text-2xl font-semibold text-gray-800">Recently Bought</h1><br/>
         </div>
         <div class="container mx-auto flex justify-between items-center">
             <div v-for="(bought) in recentlyBoughts" class="inline-block mr-2">
